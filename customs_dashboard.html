@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>داشبورد محاسبه حقوق و عوارض گمرکی</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script>
+    function calculate() {
+      const rate = parseFloat(document.getElementById('rate').value) || 0;
+      const duty = parseFloat(document.getElementById('duty').value) || 0;
+      const fob = parseFloat(document.getElementById('fob').value) || 0;
+      const freight = parseFloat(document.getElementById('freight').value) || 0;
+      const insurance = 0.005 * (fob + freight);
+      const cifUSD = fob + freight + insurance;
+      const cifIRR = cifUSD * rate;
+      const entryTax = (cifIRR * duty) / 100;
+      const redCrescent = cifIRR * 0.0005;
+      const waste = cifIRR * 0.0005;
+      const box43 = parseFloat(document.getElementById('box43').value) || 0;
+      const discount = parseFloat(document.getElementById('discount').value) || 0;
+      const vat = ((cifIRR + entryTax + redCrescent + waste - discount) * 0.1);
+      const tax2 = (cifIRR + entryTax + redCrescent + waste) * 0.02;
+      const total = entryTax + redCrescent + waste + vat + tax2 + box43;
+
+      document.getElementById('insurance').value = insurance.toFixed(2);
+      document.getElementById('cifUSD').value = cifUSD.toFixed(2);
+      document.getElementById('cifIRR').value = cifIRR.toFixed(0);
+      document.getElementById('entryTax').value = entryTax.toFixed(0);
+      document.getElementById('redCrescent').value = redCrescent.toFixed(0);
+      document.getElementById('waste').value = waste.toFixed(0);
+      document.getElementById('vat').value = vat.toFixed(0);
+      document.getElementById('tax2').value = tax2.toFixed(0);
+      document.getElementById('total').value = total.toFixed(0);
+    }
+  </script>
+</head>
+<body class="bg-gray-100 text-gray-800 p-8">
+  <div class="max-w-3xl mx-auto bg-white shadow-xl rounded-xl p-6">
+    <h1 class="text-2xl font-bold mb-6 text-center">🧾 داشبورد محاسبه حقوق و عوارض گمرکی</h1>
+
+    <div class="grid grid-cols-1 gap-4">
+      <label>نرخ ارز گمرکی (﷼): <input id="rate" type="number" class="input" value="698881"></label>
+      <label>میزان حقوق ورودی کالا (%): <input id="duty" type="number" class="input" value="5"></label>
+      <label>ارزش FOB کالا (دلاری): <input id="fob" type="number" class="input" value="10000"></label>
+      <label>کرایه حمل (دلاری): <input id="freight" type="number" class="input" value="1000"></label>
+      <label>بیمه کالا (دلاری): <input id="insurance" type="number" class="input" readonly></label>
+      <label>ارزش CIF کالا (دلاری): <input id="cifUSD" type="number" class="input" readonly></label>
+      <label>ارزش CIF ریالی: <input id="cifIRR" type="number" class="input" readonly></label>
+      <label>حقوق ورودی: <input id="entryTax" type="number" class="input" readonly></label>
+      <label>هلال احمر: <input id="redCrescent" type="number" class="input" readonly></label>
+      <label>پسماند: <input id="waste" type="number" class="input" readonly></label>
+      <label>سایر هزینه‌های باکس 43: <input id="box43" type="number" class="input" value="0"></label>
+      <label>تخفیفات بند 49 اظهارنامه: <input id="discount" type="number" class="input" value="0"></label>
+      <label>مالیات بر ارزش افزوده (10٪): <input id="vat" type="number" class="input" readonly></label>
+      <label>مالیات دو درصد: <input id="tax2" type="number" class="input" readonly></label>
+      <label class="font-bold text-lg">مجموع پرداختی: <input id="total" type="number" class="input font-bold text-green-700" readonly></label>
+    </div>
+
+    <div class="mt-6 text-center">
+      <button onclick="calculate()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">محاسبه</button>
+    </div>
+  </div>
+
+  <style>
+    .input {width:100%;padding:6px;border:1px solid #ccc;border-radius:8px;margin-top:4px;}
+  </style>
+</body>
+</html>
